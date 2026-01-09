@@ -28,7 +28,7 @@ namespace vff_avoidance_node
         private:
             rclcpp::Subscription<sensor_msgs::msg::LaserScan>::SharedPtr scan_sub_;
             rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr vel_pub_;
-            rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr marker_pub_;
+            rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr marker_pub_;
 
             rclcpp::TimerBase::SharedPtr timer_;
 
