@@ -38,7 +38,7 @@ namespace vff_avoidance_node{
         }
         vff.repulsive = {0.0,0.0};
         if (min_dist < OBSTACLE_DIST){
-            float repulse_mag = (OBSTACLE_DIST - min_dist)/OBSTACLE_DIST; //more error more repulse
+            float repulse_mag = ((OBSTACLE_DIST - min_dist)/OBSTACLE_DIST)*5; //more error more repulse
             //direction is opposite to the obstacle
             vff.repulsive[0] = -cos(angle_min_dist) * repulse_mag;
             vff.repulsive[1] = -sin(angle_min_dist) * repulse_mag;
@@ -63,5 +63,43 @@ namespace vff_avoidance_node{
         vel.linear.x = std::clamp(mag*0.3f, 0.0f, 0.3f);
         vel.angular.z = std::clamp(angle, -0.5f, 0.5f);
         vel_pub_->publish(vel);
+    }
+
+    visualization_msgs::msg::Marker VffAvoidance::make_marker(const std::vector<float> &vector, int id, float r, float g, float b){
+        visualization_msgs::msg::Marker m;
+
+        m.header.frame_id = last_scan_->header.frame_id;
+        m.header.stamp = now();
+        m.id = id;
+        m.type = visualization_msgs::msg::Marker::ARROW;
+
+        m.scale.x = 0.05;
+        m.scale.y = 0.1;
+        m.scale.z = 0.1;
+
+        m.color.r = r;
+        m.color.g = g;
+        m.color.b = b;
+        m.color.a = 1.0;
+
+        geometry_msgs::msg::Point start,end;
+        start.x = 0;
+        start.y = 0;
+
+        end.x = vector[0];
+        end.y = vector[1];
+
+        m.points.push_back(start);
+        m.points.push_back(end);
+
+        return m;
+    }
+
+    visualization_msgs::msg::MarkerArray VffAvoidance::get_debug_vff(const VFFVectors &vff){
+        visualization_msgs::msg::MarkerArray ma;
+        ma.markers.push_back(make_marker(vff.attractive, 0, 0.0, 0.0, 1.0));
+        ma.markers.push_back(make_marker(vff.repulsive, 1, 1.0, 0.0, 0.0));
+        ma.markers.push_back(make_marker(vff.result, 2, 0.0, 1.0, 0.0));
+        return ma;
     }
 }
