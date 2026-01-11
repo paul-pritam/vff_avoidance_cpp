@@ -20,28 +20,29 @@ namespace vff_avoidance_node{
         VFFVectors vff;
 
         vff.attractive = {1.0,0.0}; //Attractive Vector : constant pull forward (x=1)
+        vff.repulsive = {0.0,0.0};
 
         float min_dist = OBSTACLE_DIST;
-        float angle_min_dist = 0.0;
+        float angle_min = 0.0;
 
-        //scan +/-3o degrees for obstacle
-        int half_window = std::abs(0.52/scan.angle_increment); //number of rays
-        int center = scan.ranges.size()/2;
+        for (size_t i = 0; i < scan.ranges.size(); ++i){
 
-        for (int i = center-half_window; i <= (center+half_window); i++){
-            if (i >= 0 && i < (int)scan.ranges.size() ){
-                if (scan.ranges[i] < min_dist && scan.ranges[i] > scan.range_min){
-                    min_dist = scan.ranges[i];
-                    angle_min_dist = scan.angle_min + (i * scan.angle_increment);
-                }
+            if (std::isnan(scan.ranges[i]) || std::isinf(scan.ranges[i])) continue;
+
+            if (scan.ranges[i] < min_dist && scan.ranges[i] > scan.range_min){
+                min_dist = scan.ranges[i];
+                angle_min = scan.angle_min + (i * scan.angle_increment);
+
             }
+
         }
-        vff.repulsive = {0.0,0.0};
+
+
         if (min_dist < OBSTACLE_DIST){
             float repulse_mag = ((OBSTACLE_DIST - min_dist)/OBSTACLE_DIST)*5; //more error more repulse
             //direction is opposite to the obstacle
-            vff.repulsive[0] = -cos(angle_min_dist) * repulse_mag;
-            vff.repulsive[1] = -sin(angle_min_dist) * repulse_mag;
+            vff.repulsive[0] = -cos(angle_min) * repulse_mag;
+            vff.repulsive[1] = -sin(angle_min) * repulse_mag;
         }
         vff.result = {vff.attractive[0]+vff.repulsive[0],vff.attractive[1]+vff.repulsive[1]};
         return vff;
