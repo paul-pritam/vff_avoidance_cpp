@@ -1,5 +1,6 @@
 from launch import LaunchDescription
-from  launch_ros.actions import Node
+from launch_ros.actions import Node
+
 
 def generate_launch_description():
     return LaunchDescription([
@@ -9,12 +10,10 @@ def generate_launch_description():
             output='screen',
             parameters=[{
                 'use_sim_time': True
-            }],     
+            }],
             remappings=[
                 ('input_scan', '/scan'),
                 ('output_vel', '/cmd_vel')
             ]
         )
     ])
-
-   

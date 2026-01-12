@@ -21,14 +21,14 @@ include_directories(include)
 
 # 3. Cooking the Library
 # Matches: src/vff_avoidance/avoidance_node.cpp
-add_library(${PROJECT_NAME} SHARED 
+add_library(${PROJECT_NAME} SHARED
   src/vff_avoidance/avoidance_node.cpp
 )
 
-ament_target_dependencies(${PROJECT_NAME} 
-  rclcpp 
-  geometry_msgs 
-  sensor_msgs 
+ament_target_dependencies(${PROJECT_NAME}
+  rclcpp
+  geometry_msgs
+  sensor_msgs
   visualization_msgs
 )
 
@@ -37,15 +37,15 @@ ament_target_dependencies(${PROJECT_NAME}
 add_executable(avoidance_vff_node src/vff_main.cpp)
 
 target_link_libraries(avoidance_vff_node ${PROJECT_NAME})
-ament_target_dependencies(avoidance_vff_node 
-  rclcpp 
-  geometry_msgs 
-  sensor_msgs 
+ament_target_dependencies(avoidance_vff_node
+  rclcpp
+  geometry_msgs
+  sensor_msgs
   visualization_msgs
 )
 
 # 5. Plating (Install)
-install(TARGETS 
+install(TARGETS
   ${PROJECT_NAME}
   avoidance_vff_node
   ARCHIVE DESTINATION lib
