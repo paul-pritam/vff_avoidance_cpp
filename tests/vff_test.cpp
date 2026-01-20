@@ -12,10 +12,6 @@
 
 using namespace std::chrono_literals;
 
-// ==========================================
-// 1. HELPER FUNCTIONS (Generate Synthetic Scans)
-// ==========================================
-
 // Case 1: No obstacles (All ranges are Infinity)
 sensor_msgs::msg::LaserScan get_scan_test_1(rclcpp::Time ts)
 {
@@ -71,9 +67,7 @@ sensor_msgs::msg::LaserScan get_scan_test_5(rclcpp::Time ts)
   return ret;
 }
 
-// ==========================================
-// 2. TEST WRAPPER CLASS
-// ==========================================
+// TEST WRAPPER CLASS
 // Allows access to protected methods of the main node
 class AvoidanceNodeTest : public vff_avoidance_node::VffAvoidance
 {
@@ -84,9 +78,9 @@ public:
   }
 };
 
-// ==========================================
-// 3. UNIT TESTS (Logic Verification)
-// ==========================================
+
+// UNIT TESTS (Logic Verification)
+
 TEST(vff_tests, get_vff)
 {
   auto node_avoidance = std::make_shared<AvoidanceNodeTest>();
@@ -134,9 +128,7 @@ TEST(vff_tests, get_vff)
   ASSERT_LT(angle_rep, -M_PI_2);
 }
 
-// ==========================================
-// 4. INTEGRATION TEST (Simulation Loop)
-// ==========================================
+// INTEGRATION TEST (Simulation Loop)
 TEST(vff_tests, output_vels)
 {
   auto node_avoidance = std::make_shared<AvoidanceNodeTest>();
