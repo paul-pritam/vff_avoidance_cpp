@@ -205,14 +205,6 @@ Balance achieved: Smooth arc around obstacle
 - **Memory Usage**: Minimal, efficient vector operations
 - **CPU Load**: Low single-core usage
 
-## Future Enhancements
-
-- Dynamic goal attraction based on external input
-- Multiple goal waypoint support
-- Tunable parameters via ROS parameters
-- Advanced collision prediction
-- Integration with global path planning
-
 ## License
 
 Apache License 2.0 - See LICENSE file for details
